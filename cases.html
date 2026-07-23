@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cases · Juliana Dala Costa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --dark: #0f172a; --dark2: #1e293b; --dark3: #334155;
+      --accent: #6ee7b7; --accent2: #3d6fce;
+      --text: #f1f5f9; --muted: #94a3b8; --soft: #475569;
+      --border: #1e293b; --white: #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    nav { padding: 0 48px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(10px); z-index: 100; }
+    .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 32px; height: 32px; border: 1.5px solid var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 11px; font-weight: 800; }
+    .logo-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .nav-links { display: flex; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: all 0.15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); font-weight: 600; }
+    .btn-nav { border: 1px solid var(--accent) !important; color: var(--accent) !important; border-radius: 6px; }
+    .btn-nav:hover { background: rgba(110,231,183,0.08) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--text); border-radius: 2px; }
+    .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: var(--dark2); border-bottom: 1px solid var(--border); z-index: 99; padding: 12px 20px 20px; flex-direction: column; gap: 2px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; padding: 11px 8px; border-bottom: 1px solid var(--border); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu .btn-mob { margin-top: 10px; border: 1px solid var(--accent); color: var(--accent); text-align: center; padding: 13px; border-radius: 8px; font-weight: 600; }
+
+    .hero { max-width: 1080px; margin: 0 auto; padding: 72px 48px 48px; border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .hero h1 { font-size: 44px; font-weight: 800; color: var(--text); letter-spacing: -1px; line-height: 1.15; margin-bottom: 12px; }
+    .hero p { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.6; max-width: 520px; }
+
+    .cases-wrap { max-width: 1080px; margin: 0 auto; padding: 44px 48px 80px; }
+
+    .case { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; background: var(--dark2); transition: border-color 0.2s; scroll-margin-top: 76px; }
+    .case:hover { border-color: var(--dark3); }
+    .case.open { border-color: rgba(110,231,183,0.25); }
+    .case-top { padding: 26px 28px; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
+    .case-tags { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+    .ctag { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .ctag-co { background: rgba(110,231,183,0.08); color: var(--accent); border: 1px solid rgba(110,231,183,0.15); }
+    .ctag-type { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--border); }
+    .ctag-flag { background: rgba(251,191,36,0.08); color: #fbbf24; border: 1px solid rgba(251,191,36,0.15); }
+    .case h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 7px; line-height: 1.25; letter-spacing: -0.3px; }
+    .case-summary { font-size: 13px; color: var(--muted); line-height: 1.6; font-weight: 300; }
+    .case-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .cpill { background: rgba(110,231,183,0.07); border: 1px solid rgba(110,231,183,0.12); color: var(--accent); font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 8px; text-align: right; white-space: nowrap; }
+    .cpill small { display: block; font-size: 10px; font-weight: 400; color: var(--soft); margin-top: 1px; }
+    .expand-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s; flex-shrink: 0; }
+    .case.open .expand-btn { transform: rotate(45deg); color: var(--accent); border-color: rgba(110,231,183,0.3); }
+
+    /* HIERARQUIA VISUAL POR RELEVÂNCIA */
+    .case-xl .case-top { padding: 36px 36px; }
+    .case-xl h3 { font-size: 26px; }
+    .case-xl .case-summary { font-size: 14px; }
+    .case-xl .cpill { font-size: 15px; padding: 9px 16px; }
+
+    .case-lg .case-top { padding: 30px 30px; }
+    .case-lg h3 { font-size: 22px; }
+    .case-lg .cpill { font-size: 13px; padding: 7px 13px; }
+
+    .case-sm .case-top { padding: 20px 24px; }
+    .case-sm h3 { font-size: 17px; }
+    .case-sm .case-summary { font-size: 12px; }
+    .case-sm .cpill { font-size: 11px; padding: 5px 10px; }
+
+    /* HIGHLIGHT DE RESULTADOS (aparece assim que o case abre) */
+    .results-strip { padding: 20px 28px; background: rgba(110,231,183,0.045); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .results-strip-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--soft); margin-bottom: 12px; }
+    .results-strip-grid { display: grid; gap: 10px; }
+    .results-strip-grid.g5 { grid-template-columns: repeat(5,1fr); }
+    .results-strip-grid.g4 { grid-template-columns: repeat(4,1fr); }
+    .results-strip-grid.g2 { grid-template-columns: repeat(2,1fr); }
+    .rs-card { text-align: center; }
+    .rs-val { font-size: 20px; font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -0.3px; }
+    .case-xl .rs-val { font-size: 24px; }
+    .case-lg .rs-val { font-size: 21px; }
+    .case-sm .rs-val { font-size: 17px; }
+    .rs-lbl { font-size: 10px; color: var(--soft); margin-top: 5px; line-height: 1.3; }
+
+    .case-body { display: none; }
+    .case.open .case-body { display: block; }
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .case-col { padding: 24px 28px; }
+    .case-col:first-child { border-right: 1px solid var(--border); }
+    .blk { margin-bottom: 22px; }
+    .blk:last-child { margin-bottom: 0; }
+    .blk-lbl { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--soft); margin-bottom: 8px; }
+    .blk p { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 8px; }
+    .blk p:last-child { margin-bottom: 0; }
+    .blk ul { list-style: none; }
+    .blk li { font-size: 13px; color: var(--muted); padding: 4px 0 4px 14px; position: relative; line-height: 1.6; font-weight: 300; }
+    .blk li::before { content: '›'; position: absolute; left: 2px; color: var(--accent); }
+    .case-skills { display: flex; flex-wrap: wrap; gap: 6px; padding: 16px 28px; border-top: 1px solid var(--border); }
+    .skill-tag { font-size: 11px; padding: 3px 10px; border: 1px solid var(--border); border-radius: 20px; color: var(--soft); }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; }
+    footer p { font-size: 12px; color: var(--soft); }
+    .flinks { display: flex; gap: 20px; }
+    .flinks a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .flinks a:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 52px 20px 36px; }
+      .hero h1 { font-size: 30px; }
+      .cases-wrap { padding: 36px 20px 56px; }
+      .case-grid { grid-template-columns: 1fr; }
+      .case-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .results-strip-grid.g5, .results-strip-grid.g4 { grid-template-columns: 1fr 1fr; }
+      footer { padding: 20px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">JDC</div>
+      <span class="logo-name">Juliana Dala Costa</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="cases.html" class="active">Cases</a></li>
+      <li><a href="https://wa.me/5511997661312" target="_blank" class="btn-nav">Conversar</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Início</a>
+  <a href="cases.html" onclick="toggleMenu()">Cases</a>
+  <a href="https://wa.me/5511997661312" target="_blank" class="btn-mob">💬 Conversar</a>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Cases</div>
+  <h1>Quatro produtos,<br>quatro aprendizados reais.</h1>
+  <p>Clique em cada case para ver o contexto, as decisões e os resultados.</p>
+</div>
+
+<div class="cases-wrap">
+
+  <!-- CASE 1 -->
+  <div class="case case-xl" id="c1">
+    <div class="case-top" onclick="toggleCase('c1')">
+      <div>
+        <div class="case-tags">
+          <span class="ctag ctag-co">Webmotors + Santander</span>
+          <span class="ctag ctag-type">B2B</span>
+        </div>
+        <h3>Carteira (+Fidelidade)</h3>
+        <p class="case-summary">Como construí um programa de benefícios que fortaleceu a parceria com o Santander, aumentou a adoção dos produtos digitais e movimentou R$8,9 milhões em benefícios.</p>
+      </div>
+      <div class="case-right">
+        <div class="cpill">R$8,9M<small>consumidos em benefícios</small></div>
+        <div class="cpill">12.219<small>lojistas com créditos</small></div>
+        <button class="expand-btn">+</button>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="results-strip">
+        <div class="results-strip-label">Principais resultados</div>
+        <div class="results-strip-grid g5">
+          <div class="rs-card"><div class="rs-val">12.219</div><div class="rs-lbl">lojistas com créditos</div></div>
+          <div class="rs-card"><div class="rs-val">6.181</div><div class="rs-lbl">lojistas que usaram</div></div>
+          <div class="rs-card"><div class="rs-val">R$8,9M</div><div class="rs-lbl">consumidos</div></div>
+          <div class="rs-card"><div class="rs-val">25.303</div><div class="rs-lbl">transações realizadas</div></div>
+          <div class="rs-card"><div class="rs-val">76%</div><div class="rs-lbl">de consumo dos créditos</div></div>
+        </div>
+      </div>
+      <div class="case-grid">
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">Contexto</div>
+            <p>A Carteira nasceu da parceria entre a Webmotors e o Santander para transformar pontos do programa +Fidelidade em créditos que poderiam ser utilizados na compra de produtos digitais ou como desconto em fatura.</p>
+            <p>Além de fortalecer a parceria entre as empresas, o produto tinha um objetivo estratégico para a Webmotors: aumentar a adoção dos produtos do ecossistema B2B e criar uma experiência simples para que os lojistas utilizassem seus benefícios dentro da plataforma.</p>
+            <p>Como se tratava de uma iniciativa inédita, era necessário construir não apenas uma nova experiência para os clientes, mas também uma arquitetura preparada para evoluir ao longo do tempo, suportando novos parceiros, campanhas e regras de negócio.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">O desafio</div>
+            <p>O desafio era transformar uma parceria estratégica em um produto escalável, conciliando interesses de diferentes áreas da empresa e garantindo uma experiência simples para os lojistas.</p>
+            <p>Além da construção do produto, era necessário definir uma estratégia de evolução que permitisse entregar valor rapidamente sem comprometer a visão de longo prazo, enquanto alinhava Comercial, Marketing, Financeiro, Jurídico, Tecnologia, Atendimento e Santander em torno de um mesmo objetivo.</p>
+            <p>Um desafio importante foi a resistência inicial do time Comercial, que enxergava a Carteira como uma possível concorrente ao modelo tradicional de vendas. Foi necessário construir esse alinhamento ao longo da evolução do produto, demonstrando que a iniciativa fortalecia o ecossistema e aumentava a utilização dos produtos digitais.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Principais decisões</div>
+            <p>Comecei estruturando o business case e ajudando a definir a visão de longo prazo da Carteira. Desenvolvi as projeções financeiras e o modelo de negócio, identificando um potencial de aproximadamente R$ 980 mil por mês em consumo de benefícios e demonstrando como o produto poderia impulsionar a adoção dos produtos digitais da Webmotors.</p>
+            <p>Em vez de concentrar todas as funcionalidades em um único lançamento, defini um roadmap evolutivo dividido em quatro versões. A primeira versão permitia utilizar os créditos na compra de produtos. Em seguida, expandimos o catálogo de produtos elegíveis, disponibilizamos o desconto em fatura e, posteriormente, implementamos a flexibilidade para transferência de saldo entre modalidades. Essa estratégia permitiu validar cada etapa antes de aumentar a complexidade do produto.</p>
+            <p>Desde o início, desenhei as regras de negócio pensando na evolução da plataforma. A arquitetura foi preparada para suportar novos parceiros, campanhas, parametrizações, regras de conversão de benefícios e novas modalidades de utilização dos créditos, reduzindo a necessidade de mudanças estruturais nas evoluções futuras.</p>
+            <p>Antes da expansão para toda a base, conduzi um piloto para validar a proposta de valor e o modelo operacional. O piloto envolveu 699 lojas, das quais 235 utilizaram a Carteira, consumindo aproximadamente R$ 220 mil dos R$ 353 mil disponibilizados em créditos. Esse acompanhamento permitiu validar a experiência, identificar oportunidades de melhoria e aumentar a confiança para a expansão do produto.</p>
+            <p>Após o lançamento, acompanhei continuamente o comportamento dos lojistas para definir as próximas evoluções. Mais do que acompanhar a distribuição de créditos, passei a monitorar a ativação e o consumo dos benefícios, utilizando esses aprendizados para priorizar melhorias e ampliar o valor gerado pelo produto.</p>
+          </div>
+        </div>
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">O que aprendi</div>
+            <p>Esse produto reforçou que construir uma solução estratégica vai muito além da entrega técnica. O sucesso da Carteira dependeu da capacidade de equilibrar visão de longo prazo, entregas incrementais e alinhamento contínuo entre diferentes áreas da empresa e parceiros externos.</p>
+            <p>Outro aprendizado importante foi que distribuir benefícios não garante adoção. Acompanhar indicadores de ativação e consumo foi essencial para entender o comportamento dos lojistas, priorizar novas evoluções e aumentar o valor gerado pelo produto ao longo do tempo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-skills">
+        <span class="skill-tag">Estratégia</span>
+        <span class="skill-tag">Construção de Business Case</span>
+        <span class="skill-tag">Roadmap</span>
+        <span class="skill-tag">Produto B2B</span>
+        <span class="skill-tag">Gestão de Stakeholders</span>
+        <span class="skill-tag">Lançamento</span>
+        <span class="skill-tag">Gestão de Ecossistema</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 2 -->
+  <div class="case case-md" id="c2">
+    <div class="case-top" onclick="toggleCase('c2')">
+      <div>
+        <div class="case-tags">
+          <span class="ctag ctag-co">Webmotors</span>
+          <span class="ctag ctag-type">B2B2C</span>
+        </div>
+        <h3>Vídeo e Foto 360°</h3>
+        <p class="case-summary">Como lancei um novo produto que gerou receita e ajudou a tornar os anúncios mais atrativos para compradores e lojistas.</p>
+      </div>
+      <div class="case-right">
+        <div class="cpill">+R$500K/mês<small>receita recorrente</small></div>
+        <div class="cpill">+20% leads<small>nos anúncios</small></div>
+        <button class="expand-btn">+</button>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="results-strip">
+        <div class="results-strip-label">Principais resultados</div>
+        <div class="results-strip-grid g4">
+          <div class="rs-card"><div class="rs-val">R$500K</div><div class="rs-lbl">receita recorrente/mês</div></div>
+          <div class="rs-card"><div class="rs-val">+20%</div><div class="rs-lbl">geração de leads</div></div>
+          <div class="rs-card"><div class="rs-val">+24%</div><div class="rs-lbl">tempo de navegação</div></div>
+          <div class="rs-card"><div class="rs-val">2-3 mil</div><div class="rs-lbl">lojas adotantes</div></div>
+        </div>
+      </div>
+      <div class="case-grid">
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">Contexto</div>
+            <p>A Webmotors tinha dois objetivos estratégicos: criar uma nova fonte de receita com serviços de valor agregado e aumentar a percepção de qualidade dos leads recebidos pelas lojas. Como os lojistas pagavam pelos leads gerados pela plataforma, era comum encontrarmos comentários no NPS indicando que muitos contatos tinham pouco interesse real na compra.</p>
+            <p>Ao mesmo tempo, o mercado começava a oferecer experiências mais ricas na apresentação dos veículos. Surgiu então a oportunidade de lançar um serviço de vídeos e fotos em 360°, proporcionando mais transparência para os compradores, tornando os anúncios mais atrativos e aumentando o valor percebido pelos lojistas.</p>
+            <p>Para isso, a Webmotors firmou uma parceria com a Impel. No entanto, a parceria já representava um custo para a empresa e o produto ainda não havia sido lançado. O desafio era transformar essa iniciativa em uma solução escalável e comercialmente viável.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">O desafio</div>
+            <p>O desafio não era apenas integrar um fornecedor à plataforma. Era coordenar diferentes times da Webmotors para priorizar essa iniciativa, integrar uma solução desenvolvida por um fornecedor internacional e garantir uma experiência que funcionasse de ponta a ponta para todos os envolvidos: a Webmotors, o parceiro responsável pelas capturas, as lojas que contratavam o serviço e o comprador final, que consumiria esse conteúdo durante a busca por um veículo.</p>
+            <p>Além disso, foi necessário definir um modelo de monetização que permitisse comercializar o serviço por meio de cotas avulsas e planos recorrentes.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Principais decisões</div>
+            <p>Validamos primeiro se estávamos resolvendo um problema real. Os comentários do NPS mostravam uma percepção recorrente de baixa qualidade dos leads. A hipótese era que anúncios mais completos aumentariam a confiança do comprador antes do contato com a loja, contribuindo para melhorar a percepção de valor dos anúncios e dos próprios leads.</p>
+            <p>Antes de expandir o produto para toda a base, conduzi um piloto com um grupo reduzido de lojas. Acompanhei cada etapa da jornada, realizando visitas presenciais desde a contratação do serviço até a publicação do anúncio com as fotos e vídeos em 360°. Estar próximo dos usuários permitiu observar dificuldades que dificilmente apareceriam apenas acompanhando indicadores.</p>
+            <p>Os aprendizados do piloto direcionaram as principais evoluções do produto. Durante as visitas, percebemos que alguns lojistas tinham dificuldade para entender as marcações utilizadas na captura das imagens do veículo. Como essa etapa fazia parte da solução do parceiro, negociei melhorias para tornar a experiência mais intuitiva.</p>
+            <p>Também identificamos oportunidades dentro da Webmotors. Muitos usuários encerravam o aplicativo durante o processamento das imagens por não entenderem que o upload ainda estava em andamento. Para reduzir esse problema, evoluímos a comunicação da interface, orientando o usuário a não fechar o aplicativo até a conclusão do processamento.</p>
+            <p>Outra melhoria foi dar mais transparência ao andamento da publicação do anúncio. Criamos status como "Aguardando publicação" e "Anúncio ativo", permitindo que as lojas acompanhassem cada etapa da jornada e reduzindo dúvidas sobre o processo.</p>
+            <p>Para apoiar a adoção do produto, trabalhamos também na preparação das lojas. Em parceria com Marketing, desenvolvemos materiais e vídeos explicativos para orientar os usuários sobre a captura das imagens e a utilização da solução, reduzindo barreiras de adoção.</p>
+          </div>
+        </div>
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">O que aprendi</div>
+            <p>O principal aprendizado desse projeto foi que o sucesso de um produto não depende apenas da experiência digital. Durante o piloto, percebemos que a adoção era muito maior em lojas que já possuíam espaço físico, estrutura e processos para produzir fotos e vídeos em 360°. Já as lojas menores enfrentavam limitações operacionais que dificultavam a incorporação desse processo à rotina.</p>
+            <p>Esse aprendizado reforçou para mim a importância de validar produtos em campo e considerar a realidade operacional dos clientes na estratégia de evolução do produto. Uma mesma solução pode gerar níveis de adoção completamente diferentes dependendo do contexto em que será utilizada.</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-skills">
+        <span class="skill-tag">Estratégia</span>
+        <span class="skill-tag">Descoberta</span>
+        <span class="skill-tag">Lançamento</span>
+        <span class="skill-tag">Monetização</span>
+        <span class="skill-tag">Parcerias Estratégicas</span>
+        <span class="skill-tag">Gestão de Stakeholders</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 3 -->
+  <div class="case case-lg" id="c3">
+    <div class="case-top" onclick="toggleCase('c3')">
+      <div>
+        <div class="case-tags">
+          <span class="ctag ctag-co">Webmotors</span>
+          <span class="ctag ctag-type">Operações de Produto</span>
+        </div>
+        <h3>Gestão das Máscaras de Ligação</h3>
+        <p class="case-summary">Como redesenhei a gestão das máscaras de ligação para reduzir chamados, proteger a receita e transformar uma operação manual em uma operação escalável.</p>
+      </div>
+      <div class="case-right">
+        <div class="cpill">~R$1M/mês<small>de receita protegida</small></div>
+        <div class="cpill">dias → 1h<small>tempo de substituição</small></div>
+        <button class="expand-btn">+</button>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="results-strip">
+        <div class="results-strip-label">Principais resultados</div>
+        <div class="results-strip-grid g4">
+          <div class="rs-card"><div class="rs-val">12 mil</div><div class="rs-lbl">máscaras gerenciadas</div></div>
+          <div class="rs-card"><div class="rs-val">~40</div><div class="rs-lbl">chamados/mês (redução)</div></div>
+          <div class="rs-card"><div class="rs-val">dias → 1h</div><div class="rs-lbl">tempo de substituição</div></div>
+          <div class="rs-card"><div class="rs-val">R$1M/mês</div><div class="rs-lbl">receita protegida</div></div>
+        </div>
+      </div>
+      <div class="case-grid">
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">Contexto</div>
+            <p>Os leads de ligação representavam uma importante fonte de receita da Webmotors, movimentando aproximadamente R$ 1 milhão por mês. Para que essas ligações acontecessem, cada loja precisava possuir uma máscara de ligação, número intermediário responsável por conectar compradores e vendedores sem expor os telefones reais.</p>
+            <p>A operação era altamente manual. A distribuição das máscaras, substituições e correções dependiam de chamadas diretas às APIs do fornecedor, gerando atrasos, muitos chamados para o suporte e uma percepção generalizada de que o principal problema estava no fornecedor.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">O desafio</div>
+            <p>Antes de substituir o fornecedor, decidi entender onde realmente estava a origem dos problemas.</p>
+            <p>O desafio era diagnosticar uma operação que envolvia milhares de lojas, eliminar atividades manuais do suporte, criar regras claras para distribuição das máscaras e garantir que nenhuma loja deixasse de receber ligações, protegendo uma receita importante para o negócio.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Principais decisões</div>
+            <p>Comecei realizando um diagnóstico completo da operação. Em vez de assumir que o fornecedor era o problema, analisei a base de máscaras, os chamados do suporte e as regras de elegibilidade das lojas. Esse trabalho mostrou que grande parte das falhas acontecia dentro da própria operação da Webmotors, com cadastros incorretos, lojas elegíveis sem máscara, números alocados de forma inadequada e ausência de governança sobre o estoque disponível.</p>
+            <p>Com a causa raiz identificada, priorizamos a criação de uma ferramenta interna para o time de atendimento. Em vez de depender de chamadas manuais às APIs do fornecedor, o suporte passou a visualizar rapidamente a situação de cada loja e executar as principais ações por meio de uma interface única, reduzindo erros operacionais e o tempo necessário para solucionar problemas.</p>
+            <p>Também redesenhamos toda a lógica de distribuição das máscaras. Definimos regras para priorizar números com o mesmo DDD da loja e, quando isso não fosse possível, atribuíamos automaticamente um número 0800 para que nenhuma loja deixasse de receber ligações. Assim que um número com DDD estivesse disponível, a substituição acontecia automaticamente, sem impacto para o cliente.</p>
+            <p>Para garantir sustentabilidade da operação, estruturamos um modelo de governança. Criamos dashboards operacionais para acompanhar utilização das máscaras, disponibilidade por DDD, uso de números 0800, cobertura da base, estoque disponível e lojas elegíveis sem atendimento. Essas informações passaram a orientar as decisões do Comercial e das equipes operacionais, substituindo uma gestão baseada apenas em chamados.</p>
+          </div>
+        </div>
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">O que aprendi</div>
+            <p>Esse projeto reforçou para mim que nem sempre a solução está em substituir uma tecnologia ou um fornecedor. Muitas vezes, o maior impacto vem de entender profundamente a operação, identificar a causa raiz dos problemas e criar processos que reduzam dependências manuais.</p>
+            <p>Ao estruturar regras claras, automatizar atividades repetitivas e dar visibilidade para a operação, conseguimos resolver problemas recorrentes, reduzir o esforço das equipes e aumentar a confiabilidade de um processo essencial para o negócio.</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-skills">
+        <span class="skill-tag">Operações de Produto</span>
+        <span class="skill-tag">Análise de Dados</span>
+        <span class="skill-tag">Desenho de Processos</span>
+        <span class="skill-tag">Automação</span>
+        <span class="skill-tag">Gestão de Stakeholders</span>
+        <span class="skill-tag">Governança</span>
+        <span class="skill-tag">Eficiência Operacional</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 4 -->
+  <div class="case case-sm" id="c4">
+    <div class="case-top" onclick="toggleCase('c4')">
+      <div>
+        <div class="case-tags">
+          <span class="ctag ctag-co">PagSeguro</span>
+          <span class="ctag ctag-type">Migração</span>
+        </div>
+        <h3>Migração para o PagVendas</h3>
+        <p class="case-summary">Como conduzi a primeira onda de migração para um novo produto preservando a experiência dos clientes e ~R$800 mil em receita.</p>
+      </div>
+      <div class="case-right">
+        <div class="cpill">R$800 mil<small>em receita preservada</small></div>
+        <button class="expand-btn">+</button>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="results-strip">
+        <div class="results-strip-label">Principais resultados</div>
+        <div class="results-strip-grid g2">
+          <div class="rs-card"><div class="rs-val">R$800 mil</div><div class="rs-lbl">receita preservada</div></div>
+          <div class="rs-card"><div class="rs-val">100 mil</div><div class="rs-lbl">usuários migrados</div></div>
+        </div>
+      </div>
+      <div class="case-grid">
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">Contexto</div>
+            <p>O App Vendas era o principal aplicativo utilizado pelos lojistas para realizar transações. No entanto, sua arquitetura já não sustentava a evolução do negócio, limitando a escalabilidade técnica e dificultando a implementação de novas funcionalidades.</p>
+            <p>Para viabilizar essa evolução, a Webmotors desenvolveu o PagVendas, que passaria a substituir gradualmente o aplicativo legado.</p>
+            <p>A migração envolvia uma base de centenas de milhares de usuários e qualquer falha poderia interromper a operação dos lojistas, reduzir receita, aumentar o volume de chamados e comprometer a adoção do novo produto.</p>
+            <p>Participei da estratégia e da execução da primeira onda de migração, garantindo uma transição segura para os clientes e para o negócio.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">O desafio</div>
+            <p>O principal desafio era incentivar os usuários a adotarem um novo aplicativo sem impactar sua operação.</p>
+            <p>Além de priorizar as funcionalidades essenciais para a primeira onda, precisávamos garantir que os lojistas encontrassem no PagVendas todas as informações necessárias para continuar trabalhando desde o primeiro acesso, eliminando retrabalho e reduzindo ao máximo o atrito da mudança.</p>
+            <p>Mais do que migrar usuários, nosso objetivo era garantir que eles migrassem e realizassem suas transações no PagVendas, principal indicador de sucesso da iniciativa.</p>
+          </div>
+          <div class="blk">
+            <div class="blk-lbl">Principais decisões</div>
+            <p>Antes de iniciar a migração, mapeei as diferenças entre o App Vendas e o PagVendas para identificar quais funcionalidades eram indispensáveis na primeira onda. A partir desse diagnóstico, priorizamos as entregas que garantiriam a continuidade da operação dos lojistas, sem esperar que o novo produto tivesse total paridade com o aplicativo legado.</p>
+            <p>Para evitar retrabalho e reduzir o impacto da mudança, definimos que todas as informações relevantes dos usuários seriam migradas automaticamente para o PagVendas. Dados como estoque de produtos e demais informações cadastradas no App Vendas passaram a estar disponíveis no novo aplicativo, permitindo que os lojistas continuassem operando sem precisar reconstruir sua base de dados.</p>
+            <p>Também desenhamos uma estratégia para reduzir o atrito no primeiro acesso. Incentivamos os usuários do App Vendas a baixarem previamente o PagVendas enquanto ainda utilizavam o aplicativo antigo. Assim, quando a migração acontecia, o login era realizado automaticamente, proporcionando uma transição praticamente transparente.</p>
+            <p>Após a migração, o acesso ao App Vendas era descontinuado. Essa decisão evitou a coexistência dos dois aplicativos, reduziu a complexidade operacional e acelerou a adoção do PagVendas como canal único para realização das transações.</p>
+            <p>Durante toda a primeira onda, acompanhei de perto os indicadores da operação para validar a estratégia. O principal KPI não era apenas a quantidade de usuários migrados, mas quantos efetivamente migravam e transacionavam no PagVendas, garantindo que a mudança gerasse adoção real e continuidade do negócio.</p>
+          </div>
+        </div>
+        <div class="case-col">
+          <div class="blk">
+            <div class="blk-lbl">O que aprendi</div>
+            <p>Essa experiência reforçou que uma migração vai muito além da tecnologia. O sucesso depende de compreender profundamente a jornada do cliente e construir uma estratégia que reduza o esforço necessário para a mudança.</p>
+            <p>Preservar os dados dos usuários, eliminar etapas manuais e medir a adoção por meio do uso efetivo do novo produto foram decisões fundamentais para garantir uma transição segura, tanto para os clientes quanto para o negócio.</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-skills">
+        <span class="skill-tag">Gestão de Mudança</span>
+        <span class="skill-tag">Estratégia de Produto</span>
+        <span class="skill-tag">Priorização</span>
+        <span class="skill-tag">Gestão de Riscos</span>
+        <span class="skill-tag">Experiência do Cliente</span>
+        <span class="skill-tag">Gestão de Stakeholders</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Juliana Dala Costa</p>
+  <div class="flinks">
+    <a href="index.html">Início</a>
+    <a href="https://www.linkedin.com/in/juliana-dala-costa-349b95107/" target="_blank">LinkedIn</a>
+    <a href="https://wa.me/5511997661312" target="_blank">WhatsApp</a>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function toggleCase(id) { document.getElementById(id).classList.toggle('open'); }
+
+  // Abre automaticamente o case referenciado na URL (ex: cases.html#c2)
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const el = document.getElementById(hash);
+      if (el) {
+        el.classList.add('open');
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    }
+  });
+</script>
+</body>
+</html>
